@@ -51,4 +51,9 @@ describe("Email validation", () => {
 		expect(Email.validate(email)).toBeFalsy()
 	})
 
+	test("should not accept email without @", () => {
+		const email = "anyemailemail.com"
+		expect(Email.validate(email)).toBeFalsy()
+	})
+
 })
