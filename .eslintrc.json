@@ -33,6 +33,10 @@
         "semi": [
             "error",
             "never"
+        ],
+        "no-mixed-spaces-and-tabs": [
+            "error",
+            "never"
         ]
     }
 }
