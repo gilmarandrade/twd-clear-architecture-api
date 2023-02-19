@@ -1,5 +1,8 @@
 export class Email {
 	static validate(email: string): boolean {
+		const emailRegex =
+        /^[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~](\.?[-!#$%&'*+/0-9=?A-Z^_a-z`{|}~])*@[a-zA-Z0-9](-*\.?[a-zA-Z0-9])*\.[a-zA-Z](-?[a-zA-Z0-9])+$/
+        
 		if(!email) {
 			return false
 		} 
@@ -7,6 +10,11 @@ export class Email {
 		if(email.length > 320) {
 			return false
 		}
+
+		if(!emailRegex.test(email)) {
+			return false
+		}
+
 		const [local, domain] = email.split("@")
 		if(local.length > 64 || local.length == 0) {
 			return false
