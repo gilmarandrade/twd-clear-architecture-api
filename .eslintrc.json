@@ -34,9 +34,6 @@
             "error",
             "never"
         ],
-        "no-mixed-spaces-and-tabs": [
-            "error",
-            "never"
-        ]
+        "no-mixed-spaces-and-tabs": 0
     }
 }
