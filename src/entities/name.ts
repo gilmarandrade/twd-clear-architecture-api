@@ -3,7 +3,7 @@ import InvalidNameError from "./errors/invalid-name-error"
 
 export class Name {
 
-    private readonly value: string
+    readonly value: string
 
     private constructor(name: string) {
     	this.value = name
