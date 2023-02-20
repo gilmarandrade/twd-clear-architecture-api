@@ -4,10 +4,26 @@ import { RegisterUserOnMailingList } from "@/usecases/register-user-on-mailing-l
 import { UserRepository } from "@/usecases/register-user-on-mailing-list/ports"
 import { RegisterUserController } from "@/web-controllers"
 import { HttpRequest, HttpResponse } from "@/web-controllers/ports"
-import { MissingParamError } from "@/web-controllers/ports/erros"
+import { MissingParamError } from "@/web-controllers/erros"
 import { InMemoryUserRepository } from "@test/usecases/register-user-on-mailing-list/repository"
+import { UseCase } from "@/usecases/ports"
 
 describe("Register user web controller", () => {
+	const userData: UserData[] = []
+	const userRepo: UserRepository = new InMemoryUserRepository(userData)
+	const usecase: UseCase = new RegisterUserOnMailingList(userRepo)
+	const controller: RegisterUserController = new RegisterUserController(usecase)
+
+	class ErrorThrowingUseCaseStub implements UseCase {
+		perform(request: any): Promise<any> {
+			throw new Error("Method not implemented.")
+		}
+	}
+
+	const errorThrowingUseCaseStub: UseCase = new ErrorThrowingUseCaseStub()
+
+
+
 	test("should return status 201 when request contains valid user data", async () => {
 		const request: HttpRequest = {
 			body: {
@@ -15,11 +31,6 @@ describe("Register user web controller", () => {
 				email: "any@email.com"
 			}
 		}
-
-		const userData: UserData[] = []
-		const userRepo: UserRepository = new InMemoryUserRepository(userData)
-		const usecase: RegisterUserOnMailingList = new RegisterUserOnMailingList(userRepo)
-		const controller: RegisterUserController = new RegisterUserController(usecase)
 
 		const respose: HttpResponse = await controller.handle(request)
 		expect(respose.statusCode).toEqual(201)
@@ -34,11 +45,6 @@ describe("Register user web controller", () => {
 			}
 		}
 
-		const userData: UserData[] = []
-		const userRepo: UserRepository = new InMemoryUserRepository(userData)
-		const usecase: RegisterUserOnMailingList = new RegisterUserOnMailingList(userRepo)
-		const controller: RegisterUserController = new RegisterUserController(usecase)
-
 		const respose: HttpResponse = await controller.handle(request)
 		expect(respose.statusCode).toEqual(400)
 		expect(respose.body).toBeInstanceOf(InvalidNameError)
@@ -52,11 +58,6 @@ describe("Register user web controller", () => {
 			}
 		}
 
-		const userData: UserData[] = []
-		const userRepo: UserRepository = new InMemoryUserRepository(userData)
-		const usecase: RegisterUserOnMailingList = new RegisterUserOnMailingList(userRepo)
-		const controller: RegisterUserController = new RegisterUserController(usecase)
-
 		const respose: HttpResponse = await controller.handle(request)
 		expect(respose.statusCode).toEqual(400)
 		expect(respose.body).toBeInstanceOf(InvalidEmailError)
@@ -68,11 +69,6 @@ describe("Register user web controller", () => {
 				email: "any@email.com"
 			}
 		}
-
-		const userData: UserData[] = []
-		const userRepo: UserRepository = new InMemoryUserRepository(userData)
-		const usecase: RegisterUserOnMailingList = new RegisterUserOnMailingList(userRepo)
-		const controller: RegisterUserController = new RegisterUserController(usecase)
 
 		const respose: HttpResponse = await controller.handle(request)
 		expect(respose.statusCode).toEqual(400)
@@ -87,11 +83,6 @@ describe("Register user web controller", () => {
 			}
 		}
 
-		const userData: UserData[] = []
-		const userRepo: UserRepository = new InMemoryUserRepository(userData)
-		const usecase: RegisterUserOnMailingList = new RegisterUserOnMailingList(userRepo)
-		const controller: RegisterUserController = new RegisterUserController(usecase)
-
 		const respose: HttpResponse = await controller.handle(request)
 		expect(respose.statusCode).toEqual(400)
 		expect(respose.body).toBeInstanceOf(MissingParamError)
@@ -104,14 +95,23 @@ describe("Register user web controller", () => {
 			}
 		}
 
-		const userData: UserData[] = []
-		const userRepo: UserRepository = new InMemoryUserRepository(userData)
-		const usecase: RegisterUserOnMailingList = new RegisterUserOnMailingList(userRepo)
-		const controller: RegisterUserController = new RegisterUserController(usecase)
-
 		const respose: HttpResponse = await controller.handle(request)
 		expect(respose.statusCode).toEqual(400)
 		expect(respose.body).toBeInstanceOf(MissingParamError)
 		expect((respose.body as Error).message).toEqual("Missing parameter from request: name, email.")
+	})
+
+	test("should return status 500 when server raises", async () => {
+		const request: HttpRequest = {
+			body: {
+				name: "any name",
+				email: "any@email.com"
+			}
+		}
+
+		const controller: RegisterUserController = new RegisterUserController(errorThrowingUseCaseStub)
+		const respose: HttpResponse = await controller.handle(request)
+		expect(respose.statusCode).toEqual(500)
+		expect(respose.body).toBeInstanceOf(Error)
 	})
 })
