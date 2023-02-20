@@ -1,4 +1,4 @@
-export default class InvalidNameError extends Error {
+export class InvalidNameError extends Error {
     public readonly name = "InvalidNameError"
 
     constructor(name: string) {
