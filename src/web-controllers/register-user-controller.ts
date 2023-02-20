@@ -13,15 +13,10 @@ export class RegisterUserController {
 
     public async handle(request: HttpRequest): Promise<HttpResponse> {
     	try {
-    		const missingParams = []
-    		if(!request.body.name) {
-    			missingParams.push("name")
-    		}
-    		if(!request.body.email) {
-    			missingParams.push("email")
-    		}
-            
-    		if(missingParams.length) {
+
+    		const requiredParams = ["name", "email"]
+    		const missingParams = requiredParams.filter((paramName) => !request.body[paramName])
+    		if (missingParams.length) {
     			return badRequest(new MissingParamError(missingParams.join(", ")))
     		}
             
