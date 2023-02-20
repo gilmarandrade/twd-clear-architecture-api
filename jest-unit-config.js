@@ -1,0 +1,10 @@
+/**
+ * Testes unitários (*.spec.ts)
+*/
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const config = require("./jest.config")
+
+config.testMatch = ["**/*.spec.ts"]
+
+module.exports = config
