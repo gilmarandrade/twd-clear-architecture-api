@@ -12,10 +12,10 @@ export const MongoHelper = {
 		this.client.close()
 	},
 	getCollection(name: string): Collection {
-		return this.client.db().collection(name)
+		return this.client.db("twd-clean-architecture").collection(name)
 	},
 	clearCollection(name: string): void {
-		this.client.db().collection(name).deleteMany({})
+		this.client.db("twd-clean-architecture").collection(name).deleteMany({})
 	}
     
 }
