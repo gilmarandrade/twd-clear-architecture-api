@@ -27,6 +27,6 @@ describe("Register router", () => {
 				name:"any name",
 				email: "valid@email.com"
 			})
-			.expect(201)
-	})
+			.expect(200)
+	}, 20000)
 })

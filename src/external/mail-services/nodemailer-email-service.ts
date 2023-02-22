@@ -12,6 +12,9 @@ export class NodeMailerEmailService implements EmailService {
 				auth: {
 					user: options.username,
 					pass: options.password,
+				},
+				tls: {
+					rejectUnauthorized: false
 				}
 			})
     
@@ -24,6 +27,7 @@ export class NodeMailerEmailService implements EmailService {
 				attachments: options.attachment
 			})
 		} catch(error) {
+			console.error(error)
 			return left(new MailServiceError)
 		}
 

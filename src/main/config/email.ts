@@ -1,10 +1,9 @@
 import { EmailOptions } from "@/usecases/send-email/ports"
 
-const attachmentFilePath = "../../resources/test.txt"
 const attachment = [
 	{
-		filepath: attachmentFilePath,
-		contentType: "text/plain"
+		filename: "clean-architecture.pdf",
+		path: "https://otaviolemos.github.io/clean-architecture.pdf"
 	}
 ]
 
@@ -15,7 +14,7 @@ export function getEmailOptions(): EmailOptions {
 		port: Number.parseInt(process.env.EMAIL_PORT),
 		username: process.env.EMAIL_USERNAME,
 		password: process.env.EMAIL_PASSWORD,
-		from: "gilmar <gilmar-andrade@gmail.com",
+		from: "gilmar <gilmar-andrade@gmail.com>",
 		to: "",
 		subject: "Mensagem de teste",
 		text: "texto da mensagem",
