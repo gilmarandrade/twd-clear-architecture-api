@@ -14,7 +14,7 @@ export const MongoHelper = {
 	getCollection(name: string): Collection {
 		return this.client.db("twd-clean-architecture").collection(name)
 	},
-	clearCollection(name: string): void {
+	async clearCollection(name: string): Promise<void> {
 		this.client.db("twd-clean-architecture").collection(name).deleteMany({})
 	}
     

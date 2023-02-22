@@ -12,7 +12,7 @@ describe("Register router", () => {
 	})
 
 	beforeEach(async () => {
-		MongoHelper.clearCollection("users")
+		await MongoHelper.clearCollection("users")
 	})
 
 
