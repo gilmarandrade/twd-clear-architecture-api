@@ -1,4 +1,4 @@
-import { Either, Right, right } from "@/shared"
+import { Either, Left, Right, right } from "@/shared"
 import { MailServiceError } from "@/usecases/errors/mail-service-error"
 import { EmailOptions, EmailService } from "@/usecases/send-email/ports"
 import { SendEmail } from "@/usecases/send-email"
@@ -43,5 +43,13 @@ describe("Send email to user", () => {
 		const useCase = new SendEmail(mailOptions, mailServiceStub)
 		const response = await useCase.perform({ name: toName, email: toEmail})
 		expect(response).toBeInstanceOf(Right)
+	})
+
+	test("shoud not try to email user with invalid email address", async () => {
+		const mailServiceStub = new MailServiceStub()
+		const useCase = new SendEmail(mailOptions, mailServiceStub)
+		const invalidEmail = "invalid_email"
+		const response = await useCase.perform({ name: toName, email: invalidEmail})
+		expect(response).toBeInstanceOf(Left)
 	})
 })
