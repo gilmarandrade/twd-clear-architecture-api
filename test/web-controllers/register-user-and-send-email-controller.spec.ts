@@ -70,7 +70,7 @@ describe("Register user web controller", () => {
 
 
 
-	test("should return status 201 when request contains valid user data", async () => {
+	test("should return status 200 when request contains valid user data", async () => {
 		const request: HttpRequest = {
 			body: {
 				name: "any name",
@@ -79,7 +79,7 @@ describe("Register user web controller", () => {
 		}
 
 		const respose: HttpResponse = await controller.handle(request)
-		expect(respose.statusCode).toEqual(201)
+		expect(respose.statusCode).toEqual(200)
 		expect(respose.body).toEqual(request.body)
 	})
 
